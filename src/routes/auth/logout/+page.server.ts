@@ -1,5 +1,5 @@
 import { SessionCookieController } from '$lib/auth/cookie.js';
-import { delete_session } from '$lib/auth/login.js';
+import { delete_session } from '$lib/auth/db.js';
 import { session_token_to_hashed_secret } from '$lib/auth/session.js';
 import { TimeSpan } from '$lib/datetime.js';
 import { clickhouse_client } from '$lib/db/clickhouse.js';

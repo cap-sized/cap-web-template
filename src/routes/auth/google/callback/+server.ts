@@ -4,7 +4,7 @@ import { Logger } from '$lib/logger';
 import type { RequestEvent } from '../$types';
 import { DB_TABLES, clickhouse_client } from '$lib/db/clickhouse';
 import { Role, type Session, type User } from '$lib/types/users';
-import { select_users_by_username, upsert_user } from '$lib/auth/login';
+import { select_users_by_username, upsert_user } from '$lib/auth/db';
 import { SESSION_TIMEOUT_SPAN, rng_str } from '$lib/common';
 import { create_session } from '$lib/auth/session';
 import { SessionCookieController } from '$lib/auth/cookie';

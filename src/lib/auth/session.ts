@@ -18,7 +18,7 @@ import { Logger } from '$lib/logger';
 import { strptime_ch_utc, type UserSessionCh } from '$lib/types/clickhouse';
 import { Role, type Session, type User } from '$lib/types/users';
 import type { ClickHouseClient, ResponseJSON } from '@clickhouse/client-web';
-import { delete_session, select_user_from_hashed_secret } from './login';
+import { delete_session, select_user_from_hashed_secret } from './db';
 
 async function hash_secret(secret: string): Promise<Uint8Array> {
 	const secret_bytes = new TextEncoder().encode(secret);

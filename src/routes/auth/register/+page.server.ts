@@ -1,5 +1,5 @@
 import { SessionCookieController } from '$lib/auth/cookie';
-import { select_users_by_username, upsert_user } from '$lib/auth/login';
+import { select_users_by_username, upsert_user } from '$lib/auth/db';
 import { hash_password, verify_password } from '$lib/auth/passwords';
 import { create_session } from '$lib/auth/session';
 import { SESSION_TIMEOUT_SPAN, USER_ID_LENGTH, rng_str } from '$lib/common';

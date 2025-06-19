@@ -2,11 +2,9 @@ import type { Session, User } from '$lib/types/users';
 import type { ClickHouseClient, ResponseJSON } from '@clickhouse/client-web';
 import { DB_DATABASES, DB_TABLES } from '$lib/db/clickhouse';
 import { sanitize_query } from '$lib/db/helpers';
-import { session_token_to_hashed_secret } from './session';
 import type { UserSessionCh } from '$lib/types/clickhouse';
 
 
-// TODO: Make this login.ts only provide built queries 
 export async function select_users_by_username(ch: ClickHouseClient, username: string): Promise<User[]> {
 	const query = sanitize_query(
 		`SELECT * FROM ${DB_DATABASES['default']}.${DB_TABLES['users']} FINAL WHERE (username = '${username}' OR email = '${username}')`

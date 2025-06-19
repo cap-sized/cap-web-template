@@ -14,7 +14,7 @@
 		class="rounded-input text-background shadow-mini hover:bg-dark/95 inline-flex h-12
 	cursor-pointer items-center justify-center bg-slate-400 px-[21px]
 	text-[15px] font-semibold active:scale-[0.98] active:transition-all"
-		href="/login/google"
+		href="/auth/google"
 	>
 		Google
 	</Button.Root>
