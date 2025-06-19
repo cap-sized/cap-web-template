@@ -21,19 +21,26 @@ export const handle: Handle = async ({ event, resolve }) => {
 	let renewed_cookie: Cookie | null = null;
 
 	if (user && user?.role_id != Role.anon && must_refresh) {
-		const session = await create_session(clickhouse_client(user.role_id), user, SESSION_TIMEOUT_SPAN, DB_TABLES['sessions']);
+		const session = await create_session(
+			clickhouse_client(user.role_id),
+			user,
+			SESSION_TIMEOUT_SPAN,
+			DB_TABLES['sessions']
+		);
 		// new Logger("handle").debug("Refreshed cookie... now expires at", session.expires_at);
-		renewed_cookie = new SessionCookieController(SESSION_TIMEOUT_SPAN).create_cookie(session?.token ?? '');
+		renewed_cookie = new SessionCookieController(SESSION_TIMEOUT_SPAN).create_cookie(
+			session?.token ?? ''
+		);
 	}
 
 	if (!session) {
-		renewed_cookie = new SessionCookieController(new TimeSpan(1, "d")).create_blank_cookie();
+		renewed_cookie = new SessionCookieController(new TimeSpan(1, 'd')).create_blank_cookie();
 	}
 
 	if (renewed_cookie) {
 		event.cookies.set(renewed_cookie.name, renewed_cookie.value, {
-			path: ".",
-			...renewed_cookie.attributes
+			path: '/',
+			...renewed_cookie.attributes,
 		});
 	}
 

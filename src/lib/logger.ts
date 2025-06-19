@@ -1,10 +1,10 @@
 import { get_current_iso_date_time } from './datetime';
 import { AlertLevel, type Alert } from './types/app';
 
-const RED = "\u001b[31m";
-const GREEN = "\u001b[32m";
-const BLUE = "\u001b[34m";
-const RESET = "\u001b[0m";
+const RED = '\u001b[31m';
+const GREEN = '\u001b[32m';
+const BLUE = '\u001b[34m';
+const RESET = '\u001b[0m';
 
 export class Logger {
 	private endpoint: string;

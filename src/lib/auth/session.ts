@@ -1,5 +1,17 @@
-import { SESSION_ID_LENGTH, SESSION_REFRESH_WINDOW, SESSION_SECRET_LENGTH, rng_str } from '$lib/common';
-import { TimeSpan, create_datetime_after, get_now_utc, now_is_before, strftime, time_span_between } from '$lib/datetime';
+import {
+	SESSION_ID_LENGTH,
+	SESSION_REFRESH_WINDOW,
+	SESSION_SECRET_LENGTH,
+	rng_str,
+} from '$lib/common';
+import {
+	TimeSpan,
+	create_datetime_after,
+	get_now_utc,
+	now_is_before,
+	strftime,
+	time_span_between,
+} from '$lib/datetime';
 import { DB_TABLES, clickhouse_client } from '$lib/db/clickhouse';
 import { Logger } from '$lib/logger';
 import { strptime_ch_utc, type UserSessionCh } from '$lib/types/clickhouse';
@@ -37,20 +49,31 @@ export async function create_session(
 		token,
 	};
 
-	new Logger('create_session').info("session", session, strftime(expires_at, "ISO_UTC"));
-
+	// TODO: Catch errors here. (check privileges)
 	let resp = await ch.insert({
 		table: session_table,
-		values: [{ id, hashed_secret: new Array(...hashed_secret), role_id, expires_at: strftime(expires_at, "ISO_UTC") }],
+		values: [
+			{
+				id,
+				hashed_secret: new Array(...hashed_secret),
+				role_id,
+				expires_at: strftime(expires_at, 'ISO_UTC'),
+			},
+		],
 		format: 'JSONEachRow',
 	});
 
-	new Logger('create_session').success(`Created session [q: ${resp.query_id}]: ${resp.executed}`);
+	new Logger('create_session').success(
+		`Created session (${token}) [q: ${resp.query_id}]: ${resp.executed}`
+	);
 
 	return session;
 }
 
-export async function parse_session_as_query(session_token: string, query_type: "select" | "delete" ): Promise<string | null> {
+export async function parse_session_as_query(
+	session_token: string,
+	query_type: 'select' | 'delete'
+): Promise<string | null> {
 	const parts = session_token?.split('.');
 	if (!parts || parts?.length < 2) {
 		return null;
@@ -64,29 +87,27 @@ export async function parse_session_as_query(session_token: string, query_type: 
 	const hashed_secret = await hash_secret(secret);
 
 	switch (query_type) {
-		case "select":
+		case 'select':
 			return sanitize_query(
 				`SELECT id, email, role_id, username, avatar_url, expires_at FROM 
 				${l_sessions} LEFT JOIN ${l_users} ON ${l_sessions}.id = ${l_users}.id 
 				WHERE hashed_secret = [${hashed_secret}]`
 			);
-		case "delete":
-			return sanitize_query(
-				`DELETE FROM ${l_sessions} WHERE hashed_secret = [${hashed_secret}]`
-			);
+		case 'delete':
+			return sanitize_query(`DELETE FROM ${l_sessions} WHERE hashed_secret = [${hashed_secret}]`);
 	}
 }
 
 export async function validate_session(
 	session_token: string
-): Promise<{ user: User | null; session: Session | null, must_refresh: boolean }> {
+): Promise<{ user: User | null; session: Session | null; must_refresh: boolean }> {
 	const logger = new Logger('validate_session');
 	const anon_client = clickhouse_client(Role.anon);
-	const query = await parse_session_as_query(session_token, "select");
+	const query = await parse_session_as_query(session_token, 'select');
 	if (!query) {
 		return { user: null, session: null, must_refresh: false };
 	}
-	const response = await anon_client.query({ query, });
+	const response = await anon_client.query({ query });
 	const { data } = (await response.json<UserSessionCh>()) as ResponseJSON<UserSessionCh>;
 	if (data.length >= 2) {
 		logger.error(
@@ -98,15 +119,15 @@ export async function validate_session(
 		return { user: null, session: null, must_refresh: false };
 	}
 
-	const { id, email, role_id, username, avatar_url, expires_at, } = data[0] as UserSessionCh;
+	const { id, email, role_id, username, avatar_url, expires_at } = data[0] as UserSessionCh;
 	const user_client = clickhouse_client(role_id);
 	const expires_at_dt = strptime_ch_utc(expires_at);
 
 	if (!now_is_before(expires_at_dt)) {
 		// token expired, do not autorefresh
-		const delete_q = await parse_session_as_query(session_token, "delete") ?? '';
-		const response = await user_client.exec({ query: delete_q, });
-		logger.debug("deleted session", response.summary);
+		const delete_q = (await parse_session_as_query(session_token, 'delete')) ?? '';
+		const response = await user_client.exec({ query: delete_q });
+		logger.debug('deleted session', response.summary);
 		return { user: null, session: null, must_refresh: false };
 	}
 
@@ -126,6 +147,6 @@ export async function validate_session(
 			token: session_token,
 		},
 		// TODO: autorefresh if under a certain TTL left
-		must_refresh: ttl.lte(SESSION_REFRESH_WINDOW)
+		must_refresh: ttl.lte(SESSION_REFRESH_WINDOW),
 	};
 }

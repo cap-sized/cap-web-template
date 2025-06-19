@@ -23,7 +23,7 @@ test('create_session', async () => {
 			'dummy_sessions'
 		);
 		expect(session.user_id.length == SESSION_ID_LENGTH);
-		expect(session.hashed_secret.length == 32);
+		expect(session.hashed_secret?.length == 32);
 		expect(session.token?.includes(session.user_id));
 		expect(session.user_id === DEFAULT_TEST_USER.id);
 	} catch (error) {

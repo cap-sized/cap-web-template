@@ -37,23 +37,23 @@ export class TimeSpan {
 		return new TimeSpan(Math.round(this.milliseconds() * x), 'ms');
 	}
 
-	public lt(span: TimeSpan) : boolean {
+	public lt(span: TimeSpan): boolean {
 		return this.milliseconds() < span.milliseconds();
 	}
 
-	public gt(span: TimeSpan) : boolean {
+	public gt(span: TimeSpan): boolean {
 		return this.milliseconds() > span.milliseconds();
 	}
 
-	public lte(span: TimeSpan) : boolean {
+	public lte(span: TimeSpan): boolean {
 		return this.milliseconds() <= span.milliseconds();
 	}
 
-	public gte(span: TimeSpan) : boolean {
+	public gte(span: TimeSpan): boolean {
 		return this.milliseconds() >= span.milliseconds();
 	}
 
-	public eq(span: TimeSpan) : boolean {
+	public eq(span: TimeSpan): boolean {
 		return this.milliseconds() == span.milliseconds();
 	}
 }
@@ -63,7 +63,7 @@ export function now_is_before(date: Date): boolean {
 }
 
 export function time_span_between(target: Date, start: Date = new Date()): TimeSpan {
-	return new TimeSpan(target.getTime() - start.getTime(), "ms");
+	return new TimeSpan(target.getTime() - start.getTime(), 'ms');
 }
 
 export function create_datetime_after(from: Date, timeSpan: TimeSpan): Date {
@@ -78,12 +78,12 @@ export function get_current_iso_date_time(): string {
 	return new Date().toISOString();
 }
 
-export function strftime(dt: Date, format: "ISO_UTC" | "default"): string {
+export function strftime(dt: Date, format: 'ISO_UTC' | 'default'): string {
 	switch (format) {
-		case "ISO_UTC":
-			const p = (val: number) => val.toString().padStart(2, "0")
+		case 'ISO_UTC':
+			const p = (val: number) => val.toString().padStart(2, '0');
 			return `${dt.getUTCFullYear()}-${p(dt.getUTCMonth() + 1)}-${p(dt.getUTCDate())}T${p(dt.getUTCHours())}:${p(dt.getUTCMinutes())}:${p(dt.getUTCSeconds())}.${p(dt.getUTCMilliseconds())}`;
-		case "default":
+		case 'default':
 			return dt.toUTCString();
 	}
 }

@@ -1,9 +1,9 @@
-import type { Role } from "./users";
+import type { Role } from './users';
 
 export type DateString = string;
 
 export function strptime_ch_utc(dt: DateString): Date {
-    return new Date(Date.parse(`${dt.replace(" ", "T")}Z`));
+	return new Date(Date.parse(`${dt.replace(' ', 'T')}Z`));
 }
 
 export interface UserSessionCh {
@@ -17,4 +17,4 @@ export interface UserSessionCh {
 	user_id: string;
 	expires_at: DateString;
 	token?: string;
-};
+}

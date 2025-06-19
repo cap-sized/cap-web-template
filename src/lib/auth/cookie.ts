@@ -7,9 +7,9 @@ export interface CookieAttributes {
 	secure?: boolean;
 	path?: string;
 	domain?: string;
-	same_site?: 'lax' | 'strict' | 'none';
-	http_only?: boolean;
-	max_age?: number;
+	sameSite?: 'lax' | 'strict' | 'none';
+	httpOnly?: boolean;
+	maxAge?: number;
 	expires?: Date;
 }
 
@@ -26,22 +26,22 @@ export function serialize_cookie(
 	if (attributes?.expires !== undefined) {
 		key_value_entries.push(['Expires', attributes.expires.toUTCString()]);
 	}
-	if (attributes?.http_only) {
+	if (attributes?.httpOnly) {
 		key_value_entries.push(['HttpOnly']);
 	}
-	if (attributes?.max_age !== undefined) {
-		key_value_entries.push(['Max-Age', attributes.max_age.toString()]);
+	if (attributes?.maxAge !== undefined) {
+		key_value_entries.push(['Max-Age', attributes.maxAge.toString()]);
 	}
 	if (attributes?.path !== undefined) {
 		key_value_entries.push(['Path', attributes.path]);
 	}
-	if (attributes?.same_site === 'lax') {
+	if (attributes?.sameSite === 'lax') {
 		key_value_entries.push(['SameSite', 'Lax']);
 	}
-	if (attributes?.same_site === 'none') {
+	if (attributes?.sameSite === 'none') {
 		key_value_entries.push(['SameSite', 'None']);
 	}
-	if (attributes?.same_site === 'strict') {
+	if (attributes?.sameSite === 'strict') {
 		key_value_entries.push(['SameSite', 'Strict']);
 	}
 	if (attributes?.secure) {
@@ -84,14 +84,14 @@ export class CookieController {
 	public create_cookie(value: string): Cookie {
 		return new Cookie(this.cookie_name, value, {
 			...this.base_cookie_attributes,
-			max_age: this.cookie_expires_in?.seconds(),
+			maxAge: this.cookie_expires_in?.seconds(),
 		});
 	}
 
 	public create_blank_cookie(): Cookie {
 		return new Cookie(this.cookie_name, '', {
 			...this.base_cookie_attributes,
-			max_age: 0,
+			maxAge: 0,
 		});
 	}
 
@@ -107,9 +107,9 @@ export class SessionCookieController extends CookieController {
 			SESSION_COOKIE_NAME,
 			{
 				secure: true,
-				path: '.',
-				same_site: 'lax',
-				max_age: 10,
+				path: '/',
+				sameSite: 'lax',
+				maxAge: 10,
 			},
 			{ expires_in }
 		);

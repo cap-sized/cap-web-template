@@ -7,7 +7,6 @@
 	let { children } = $props();
 
 	let user = $state($user_store);
-
 </script>
 
 <Navbar title="TITLE ? {user?.username ?? ''} [{Role.toString(user?.role_id ?? Role.anon)}]" />

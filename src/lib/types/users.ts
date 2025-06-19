@@ -30,16 +30,16 @@ export type DatabaseUser = {
 };
 
 export namespace Role {
-  export function toString(role: Role): string {
-	switch (role) {
-		case Role.anon:
-			return "anon";
-		case Role.authenticated:
-			return "authenticated";
-		case Role.admin:
-			return "admin";
-		case Role.superadmin:
-			return "superadmin";
+	export function toString(role: Role): string {
+		switch (role) {
+			case Role.anon:
+				return 'anon';
+			case Role.authenticated:
+				return 'authenticated';
+			case Role.admin:
+				return 'admin';
+			case Role.superadmin:
+				return 'superadmin';
+		}
 	}
-  }
 }
