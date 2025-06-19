@@ -5,7 +5,7 @@ export type User = {
 	email: string;
 	role_id: Role;
 	username: string;
-	avatar_url: string;
+	avatar_url?: string;
 	password_hash?: string;
 };
 

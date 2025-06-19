@@ -3,7 +3,7 @@
 	import { Button } from 'bits-ui';
 	import { superForm } from 'sveltekit-superforms';
 
-	let { data } = $props();
+	let { data }: { data: { form: any } } = $props();
 	const { form, errors, enhance, constraints, delayed } = $derived(superForm(
 		data.form, { ...get_superform_options(), }
 	));
@@ -14,11 +14,22 @@
 		class="rounded-input text-background shadow-mini hover:bg-dark/95 inline-flex h-12
 	cursor-pointer items-center justify-center bg-slate-400 px-[21px]
 	text-[15px] font-semibold active:scale-[0.98] active:transition-all"
-		href="/login/google"
+		href="/login"
 	>
-		Google
+		Login
 	</Button.Root>
 	<form use:enhance method="POST" class="grid grid-cols-2 gap-x-10 gap-y-5 sm:w-[600px]">
+		<label for="name">Email</label>
+		<input
+			class="border-2 border-black p-2"
+			type="text"
+			name="name"
+			aria-invalid={$errors.email ? 'true' : undefined}
+			bind:value={$form.email}
+			{...$constraints.email}
+		/>
+		{#if $errors.email}<span class="invalid">{$errors.email}</span>{/if}
+
 		<label for="name">Username</label>
 		<input
 			class="border-2 border-black p-2"

@@ -4,7 +4,7 @@ import { Logger } from '$lib/logger';
 import type { RequestEvent } from '../$types';
 import { DB_TABLES, clickhouse_client } from '$lib/db/clickhouse';
 import { Role, type Session, type User } from '$lib/types/users';
-import { fetch_users, upsert_user } from '$lib/auth/login';
+import { select_users_by_username, upsert_user } from '$lib/auth/login';
 import { SESSION_TIMEOUT_SPAN, rng_str } from '$lib/common';
 import { create_session } from '$lib/auth/session';
 import { SessionCookieController } from '$lib/auth/cookie';
@@ -34,7 +34,7 @@ export async function GET({ url, cookies }: RequestEvent): Promise<Response> {
 		const { sub, email, name, picture } = google_user;
 		const anon_client = clickhouse_client(Role.anon);
 
-		const data: User[] = await fetch_users(anon_client, email);
+		const data: User[] = await select_users_by_username(anon_client, email);
 
 		if (data.length > 1) {
 			logger.warning(`Multiple users for ${email} found:`, data);
