@@ -4,9 +4,9 @@
 	import { superForm } from 'sveltekit-superforms';
 
 	let { data }: { data: { form: any } } = $props();
-	const { form, errors, enhance, constraints, delayed } = $derived(superForm(
-		data.form, { ...get_superform_options(), }
-	));
+	const { form, errors, enhance, constraints, delayed } = $derived(
+		superForm(data.form, { ...get_superform_options() })
+	);
 </script>
 
 <div class="flex w-1/2 flex-col space-y-2">

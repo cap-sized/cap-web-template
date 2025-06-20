@@ -18,6 +18,7 @@ export const DB_DATABASES: { [n: string]: string } = {
 export const DB_TABLES: { [n: string]: string } = {
 	users: 'users',
 	sessions: 'dummy_sessions',
+	role_permissions: 'role_permissions',
 };
 
 type DbUserMap = { [n: string]: DatabaseUser };
@@ -31,12 +32,12 @@ const DEFAULT_DB_USERS: DbUserMap = {
 		password: CH_AUTH_PASSWORD,
 		role: Role.authenticated,
 	},
-	2: {
+	14: {
 		username: CH_ADMIN_USER,
 		password: CH_ADMIN_PASSWORD,
 		role: Role.admin,
 	},
-	3: {
+	15: {
 		username: CH_SUPERADMIN_USER,
 		password: CH_SUPERADMIN_PASSWORD,
 		role: Role.superadmin,

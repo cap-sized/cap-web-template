@@ -1,5 +1,5 @@
 import { get_current_iso_date_time } from './datetime';
-import { AlertLevel, type Alert } from './types/app';
+import { AlertLevel, type Alert } from './types/common';
 
 const RED = '\u001b[31m';
 const GREEN = '\u001b[32m';

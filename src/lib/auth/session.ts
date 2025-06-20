@@ -16,9 +16,15 @@ import { DB_TABLES, clickhouse_client } from '$lib/db/clickhouse';
 import { sanitize_query } from '$lib/db/helpers';
 import { Logger } from '$lib/logger';
 import { strptime_ch_utc, type UserSessionCh } from '$lib/types/clickhouse';
-import { Role, type Session, type User } from '$lib/types/users';
+import { Role, type AccessLevel, type Session, type User, type Access } from '$lib/types/users';
 import type { ClickHouseClient, ResponseJSON } from '@clickhouse/client-web';
-import { delete_session, select_user_from_hashed_secret } from './db';
+import {
+	delete_session,
+	select_role_permissions_from_hashed_secret,
+	select_user_from_hashed_secret,
+} from './db';
+import type { Cookies } from '@sveltejs/kit';
+import { SessionCookieController } from './cookie';
 
 async function hash_secret(secret: string): Promise<Uint8Array> {
 	const secret_bytes = new TextEncoder().encode(secret);
@@ -65,7 +71,7 @@ export async function create_session(
 	return session;
 }
 
-export async function session_token_to_hashed_secret(token: string) : Promise<Uint8Array | null> {
+export async function session_token_to_hashed_secret(token: string): Promise<Uint8Array | null> {
 	const parts = token?.split('.');
 	if (!parts || parts?.length < 2) {
 		return null;
@@ -75,6 +81,38 @@ export async function session_token_to_hashed_secret(token: string) : Promise<Ui
 	return await hash_secret(secret);
 }
 
+export function invalidate_session(cookies: Cookies) {
+	const blank_cookie = new SessionCookieController(new TimeSpan(1, 'd')).create_blank_cookie();
+
+	cookies.set(blank_cookie.name, blank_cookie.value, {
+		path: '/',
+		...blank_cookie.attributes,
+	});
+}
+
+export async function validate_session_permissions(
+	session_token: string,
+	access: Access
+): Promise<{ allowed: boolean; username?: string; role_id: Role }> {
+	// const logger = new Logger('validate_session_permissions');
+	const hashed_secret = await session_token_to_hashed_secret(session_token);
+
+	const permissions = await select_role_permissions_from_hashed_secret(
+		clickhouse_client(Role.anon),
+		hashed_secret,
+		access.table
+	);
+	if (permissions.length == 0) {
+		return { allowed: false, role_id: Role.anon };
+	}
+
+	// logger.debug('session permissions', permissions[0]);
+
+	const allowed = access.permissions.reduce((allowed, lvl) => {
+		return allowed && permissions[0][lvl];
+	}, true);
+	return { allowed, username: permissions[0].username, role_id: permissions[0].role_id };
+}
 
 export async function validate_session(
 	session_token: string
@@ -128,5 +166,5 @@ export async function validate_session(
 	} catch (e) {
 		logger.error(e);
 		return { user: null, session: null, must_refresh: false };
-	} 
+	}
 }

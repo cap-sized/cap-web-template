@@ -3,7 +3,6 @@ import { create_session, validate_session } from '$lib/auth/session';
 import { SESSION_COOKIE_NAME, SESSION_TIMEOUT_SPAN } from '$lib/common';
 import { TimeSpan } from '$lib/datetime';
 import { DB_TABLES, clickhouse_client } from '$lib/db/clickhouse';
-import { Logger } from '$lib/logger';
 import { Role } from '$lib/types/users';
 
 import type { Handle } from '@sveltejs/kit';
@@ -27,7 +26,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 			SESSION_TIMEOUT_SPAN,
 			DB_TABLES['sessions']
 		);
-		// new Logger("handle").debug("Refreshed cookie... now expires at", session.expires_at);
 		renewed_cookie = new SessionCookieController(SESSION_TIMEOUT_SPAN).create_cookie(
 			session?.token ?? ''
 		);

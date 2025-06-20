@@ -19,8 +19,8 @@ export type Session = {
 export enum Role {
 	anon = 0,
 	authenticated = 1,
-	admin = 2,
-	superadmin = 3,
+	admin = 14,
+	superadmin = 15,
 }
 
 export type DatabaseUser = {
@@ -43,3 +43,35 @@ export namespace Role {
 		}
 	}
 }
+
+export type AccessLevel =
+	| 'select'
+	| 'insert'
+	| 'update'
+	| 'delete'
+	| 'select_self'
+	| 'insert_self'
+	| 'update_self'
+	| 'delete_self'
+	| 'all';
+
+export type Access = {
+	table: string;
+	permissions: AccessLevel[];
+};
+
+export type RolePermissions = {
+	role_id: number;
+	user_id?: string;
+	tables: string;
+
+	select: boolean;
+	insert: boolean;
+	update: boolean;
+	delete: boolean;
+	select_self: boolean;
+	insert_self: boolean;
+	update_self: boolean;
+	delete_self: boolean;
+	all: boolean;
+};

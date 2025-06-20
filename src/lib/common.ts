@@ -27,3 +27,7 @@ export function get_superform_options(): any {
 		timeoutMs: 8000,
 	};
 }
+
+export function unauthorized_msg(username?: string | null): string {
+	return `${username ?? 'Hey'}, you are not authorized to see this page, please login as an administrator`;
+}

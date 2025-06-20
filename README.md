@@ -1,38 +1,30 @@
-# sv
+# cap-web-template
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+Base template to build capsized web apps off of. Handles
 
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npx sv create
-
-# create a new project in my-app
-npx sv create my-app
-```
+- [ ] Authentication
+- [ ] User/Session Management
+- [ ] Arbitrary table viewing
+- [ ] Arbitrary table updating
+- [ ] Commonly used components
+- [ ] Form builders
 
 ## Developing
 
 Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
 
 ```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+npm run dev # -- --open (to open the app in a new browser tab)
+npm run test
+npm run format
+npm run check
 ```
 
 ## Building
 
-To create a production version of your app:
-
 ```bash
 npm run build
+npm run preview
 ```
-
-You can preview the production build with `npm run preview`.
 
 > To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.

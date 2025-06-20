@@ -1,4 +1,3 @@
-import { session_store, user_store } from './stores';
 
 export const load = async ({ data, depends }) => {
 	/**
@@ -7,8 +6,5 @@ export const load = async ({ data, depends }) => {
 	 */
 	depends('auth:session');
 	depends('auth:logout');
-	const { user, session, ...layout_data } = data;
-	user_store.set(user);
-	session_store.set(session);
-	return layout_data;
+	return data;
 };

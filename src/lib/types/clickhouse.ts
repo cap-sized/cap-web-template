@@ -18,3 +18,21 @@ export interface UserSessionCh {
 	expires_at: DateString;
 	token?: string;
 }
+
+export interface UserPermissionsCh {
+	id: string;
+	username?: string;
+	role_id: Role;
+	expires_at: DateString;
+	tables: string;
+
+	select: boolean;
+	insert: boolean;
+	update: boolean;
+	delete: boolean;
+	select_self: boolean;
+	insert_self: boolean;
+	update_self: boolean;
+	delete_self: boolean;
+	all: boolean;
+}

@@ -30,14 +30,20 @@ export const actions: Actions = {
 		try {
 			const clash_email: User[] = await select_users_by_username(anon_client, email);
 			if (clash_email.length >= 1) {
-				const account_type = clash_email[0].google_id ? "google" : (clash_email[0].discord_id ? "discord": "email");
-				form.errors.email = [`This email already has an account (registered via ${account_type}). Please login instead`]
+				const account_type = clash_email[0].google_id
+					? 'google'
+					: clash_email[0].discord_id
+						? 'discord'
+						: 'email';
+				form.errors.email = [
+					`This email already has an account (registered via ${account_type}). Please login instead`,
+				];
 				return fail(400, { form });
 			}
 
 			const clash_username: User[] = await select_users_by_username(anon_client, username);
 			if (clash_username.length >= 1) {
-				form.errors.username = ['This username is already taken. Please choose another']
+				form.errors.username = ['This username is already taken. Please choose another'];
 				return fail(400, { form });
 			}
 
@@ -50,14 +56,17 @@ export const actions: Actions = {
 				email,
 				role_id: Role.authenticated,
 				username,
-				password_hash
+				password_hash,
 			};
 
 			const auth_client = clickhouse_client(user.role_id);
-			const {ok, summary} = await upsert_user(auth_client, user);
+			const { ok, summary } = await upsert_user(auth_client, user);
 			if (!ok) {
-				logger.error("failed to create user", summary);
-				return message(form, `Server is currently having issues, failed to create user. Please try again later.`);
+				logger.error('failed to create user', summary);
+				return message(
+					form,
+					`Server is currently having issues, failed to create user. Please try again later.`
+				);
 			}
 
 			const timespan = SESSION_TIMEOUT_SPAN;

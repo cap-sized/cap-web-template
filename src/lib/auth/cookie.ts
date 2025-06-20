@@ -2,6 +2,7 @@
 import { SESSION_COOKIE_NAME } from '$lib/common';
 import type { TimeSpan } from '$lib/datetime';
 import type { Session } from '$lib/types/users';
+import type { Cookies } from '@sveltejs/kit';
 
 export interface CookieAttributes {
 	secure?: boolean;
