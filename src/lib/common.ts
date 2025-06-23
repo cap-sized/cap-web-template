@@ -7,6 +7,8 @@ export const SESSION_TIMEOUT_SPAN = new TimeSpan(2, 'w');
 export const SESSION_REFRESH_WINDOW = new TimeSpan(1, 'd');
 export const SESSION_COOKIE_NAME: string = 'capsized-session';
 export const USER_ID_LENGTH: number = 16;
+export const DEFAULT_PAGE_START: number = 0;
+export const DEFAULT_PAGE_SIZE: number = 20;
 
 export const alphabet: string = 'abcdefghijklmnopqrstuvwxyz123456789';
 

@@ -7,7 +7,6 @@ import {
 } from '@tanstack/table-core';
 import { get, readable, writable, type Readable, derived } from 'svelte/store';
 
-
 type ReadableOrVal<T> = T | Readable<T>;
 type ReadTable<T> = Readable<Table<T>>;
 

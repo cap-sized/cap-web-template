@@ -15,7 +15,7 @@ import {
 import { DB_TABLES, clickhouse_client } from '$lib/db/clickhouse';
 import { sanitize_query } from '$lib/db/helpers';
 import { Logger } from '$lib/logger';
-import { strptime_ch_utc, type UserSessionCh } from '$lib/types/clickhouse';
+import { strptime_ch_utc } from '$lib/types/db';
 import { Role, type AccessLevel, type Session, type User, type Access } from '$lib/types/users';
 import type { ClickHouseClient, ResponseJSON } from '@clickhouse/client-web';
 import {
@@ -25,6 +25,7 @@ import {
 } from './db';
 import type { Cookies } from '@sveltejs/kit';
 import { SessionCookieController } from './cookie';
+import type { UserSessionView } from '$lib/types/db_users';
 
 async function hash_secret(secret: string): Promise<Uint8Array> {
 	const secret_bytes = new TextEncoder().encode(secret);
@@ -135,7 +136,7 @@ export async function validate_session(
 			return { user: null, session: null, must_refresh: false };
 		}
 
-		const { id, email, role_id, username, avatar_url, expires_at } = users[0] as UserSessionCh;
+		const { id, email, role_id, username, avatar_url, expires_at } = users[0] as UserSessionView;
 		const user_client = clickhouse_client(role_id);
 		const expires_at_dt = strptime_ch_utc(expires_at);
 

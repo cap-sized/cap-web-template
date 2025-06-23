@@ -1,5 +1,5 @@
 import { TimeSpan, create_datetime_after, strftime, time_span_between } from '$lib/datetime';
-import { strptime_ch_utc } from '$lib/types/clickhouse';
+import { strptime_ch_utc } from '$lib/types/db';
 import { expect, test } from 'vitest';
 
 const DEFAULT_TEST_DATE = new Date(1738483200000); // 2025-02-02 16:00:00.00008

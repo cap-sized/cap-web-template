@@ -13,7 +13,8 @@ const DEFAULT_TEST_USER: User = {
 	role_id: Role.authenticated,
 };
 
-test('create_session', async () => {
+test('create_session', async ({ skip }) => {
+	skip(); // only enable this when checking db
 	try {
 		let ch = clickhouse_client(Role.authenticated);
 		let session = await create_session(

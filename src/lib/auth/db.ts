@@ -2,7 +2,7 @@ import { Role, type Session, type User } from '$lib/types/users';
 import type { ClickHouseClient, ResponseJSON } from '@clickhouse/client-web';
 import { DB_DATABASES, DB_TABLES } from '$lib/db/clickhouse';
 import { sanitize_query } from '$lib/db/helpers';
-import type { UserPermissionsCh, UserSessionCh } from '$lib/types/clickhouse';
+import type { UserPermissionsView, UserSessionView } from '$lib/types/db_users';
 
 export async function select_user_by_id(ch: ClickHouseClient, id: string): Promise<User[]> {
 	const query = sanitize_query(
@@ -54,7 +54,7 @@ export async function select_user_from_hashed_secret(
 		WHERE hashed_secret = [${hashed_secret}]`);
 
 	const response = await ch.query({ query });
-	const { data } = (await response.json<UserSessionCh>()) as ResponseJSON<UserSessionCh>;
+	const { data } = (await response.json<UserSessionView>()) as ResponseJSON<UserSessionView>;
 	return data ?? [];
 }
 
@@ -62,7 +62,7 @@ export async function select_role_permissions_from_hashed_secret(
 	ch: ClickHouseClient,
 	hashed_secret: Uint8Array | null,
 	table: string
-): Promise<UserPermissionsCh[]> {
+): Promise<UserPermissionsView[]> {
 	const l_perms = DB_TABLES['role_permissions'];
 	const l_sessions = DB_TABLES['sessions'];
 	const l_users = DB_TABLES['users'];
@@ -78,7 +78,8 @@ export async function select_role_permissions_from_hashed_secret(
 		`
 	);
 	const response = await ch.query({ query });
-	const { data } = (await response.json<UserPermissionsCh>()) as ResponseJSON<UserPermissionsCh>;
+	const { data } =
+		(await response.json<UserPermissionsView>()) as ResponseJSON<UserPermissionsView>;
 	return data ?? [];
 }
 

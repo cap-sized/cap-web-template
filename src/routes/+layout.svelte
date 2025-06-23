@@ -4,14 +4,8 @@
 	import '../app.css';
 
 	let { data, children } = $props();
-	let { user, session } = $derived(data as { user: User | null, session: Session | null});
-
-	$inspect(data);
-
-	$effect(() => {
-		console.log(user);
-	});
+	let { user } = $derived(data as { user: User | null; session: Session | null });
 </script>
 
-<Navbar title="TITLE ? {user?.username ?? ''} [{Role.toString(user?.role_id ?? Role.anon)}]" />
+<Navbar title="capsized $ {user?.username ?? ''} [{Role.toString(user?.role_id ?? Role.anon)}]" />
 {@render children()}

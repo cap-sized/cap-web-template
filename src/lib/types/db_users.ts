@@ -1,12 +1,7 @@
+import type { DateString } from './db';
 import type { Role } from './users';
 
-export type DateString = string;
-
-export function strptime_ch_utc(dt: DateString): Date {
-	return new Date(Date.parse(`${dt.replace(' ', 'T')}Z`));
-}
-
-export interface UserSessionCh {
+export interface UserSessionView {
 	id: string;
 	google_id?: string;
 	discord_id?: string;
@@ -19,7 +14,7 @@ export interface UserSessionCh {
 	token?: string;
 }
 
-export interface UserPermissionsCh {
+export interface UserPermissionsView {
 	id: string;
 	username?: string;
 	role_id: Role;

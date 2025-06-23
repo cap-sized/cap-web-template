@@ -4,8 +4,11 @@ Base template to build capsized web apps off of. Handles
 
 - [ ] Authentication
 - [ ] User/Session Management
-- [ ] Arbitrary table viewing
-- [ ] Arbitrary table updating
+- [ ] Tables
+  - [ ] Basic table
+  - [ ] Basic editable table
+  - [ ] Basic paginated table
+  - [ ] Basic sortable table
 - [ ] Commonly used components
 - [ ] Form builders
 

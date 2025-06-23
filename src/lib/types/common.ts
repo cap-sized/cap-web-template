@@ -11,3 +11,9 @@ export type Alert = {
 	level: AlertLevel;
 	message: string;
 };
+
+export type OrderParams = { [key: string]: 'ASC' | 'DESC' };
+
+export type PaginationParams = { page: number; perpage: number };
+
+export type TableView<T> = { table_data: T; view_name: string };
