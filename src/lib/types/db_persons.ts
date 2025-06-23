@@ -47,6 +47,28 @@ export type BasicPlayerView = {
 	slug: string;
 };
 
+export type PersonView = {
+	id: number; // PRIMARY
+	full_name: string;
+	first_name: string;
+	last_name: string;
+	birth_date: string;
+	death_date: string;
+	slug: string;
+	birth_city: string;
+	birth_state_province: string;
+	birth_country_code: string;
+	nhl_player_id?: string;
+	nhl_staff_id?: string;
+	nhl_agent_id?: string;
+	is_nhl_player: boolean;
+
+	created_by: string;
+	created_at: DateString;
+	updated_by: string;
+	updated_at: DateString;
+};
+
 export type FullPlayerView = {
 	person_id: number; // PRIMARY
 

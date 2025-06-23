@@ -3,13 +3,19 @@
 	import { type FullPlayerView } from '$lib/types/db_persons.js';
 	import BaseTable from '$lib/ui/table/base_table.svelte';
 	import BasicHeader from '$lib/ui/table/headers/basic_header.svelte';
-	import { createColumnHelper, type ColumnDef, type ColumnHelper, type HeaderContext } from '@tanstack/table-core';
+	import {
+		createColumnHelper,
+		type ColumnDef,
+		type ColumnHelper,
+		type HeaderContext,
+	} from '@tanstack/table-core';
 
 	let { data } = $props();
 	const { table_data } = $derived(data);
 
 	const helper = createColumnHelper<FullPlayerView>();
-	const standard_header = (header_ctx: HeaderContext<FullPlayerView, string>) => renderComponent(BasicHeader<FullPlayerView>, { header_ctx });
+	const standard_header = (header_ctx: HeaderContext<FullPlayerView, string>) =>
+		renderComponent(BasicHeader<FullPlayerView>, { header_ctx });
 	const columns: ColumnDef<FullPlayerView>[] = [
 		helper.accessor('full_name', {
 			header: standard_header,

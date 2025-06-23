@@ -24,13 +24,15 @@ export function sql_select_paginated(
 	table_name: string,
 	paginate: PaginationParams,
 	order: OrderParams,
+	where: string = '',
 	columns: string[] = ['*']
 ): string {
 	const colstr: string = columns.join(', ');
 	const orderstr: string = order_to_str(order);
+	const wherestr: string = where.length ? `WHERE ${where}` : '';
 	const { limit, offset } = paginate_to_limit_offset(paginate);
 	const query = sanitize_query(
-		`SELECT ${colstr} FROM ${CH_DATABASE}.${table_name} ${orderstr} LIMIT ${limit} OFFSET ${offset}`
+		`SELECT ${colstr} FROM ${CH_DATABASE}.${table_name} ${wherestr} ${orderstr} LIMIT ${limit} OFFSET ${offset}`
 	);
 	return query;
 }
