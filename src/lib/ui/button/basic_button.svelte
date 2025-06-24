@@ -5,10 +5,16 @@
 		label,
 		action,
 		children,
-	}: { label?: string; action: () => Promise<void> | void; children: Snippet } = $props();
+		class: className,
+	}: {
+		label?: string;
+		action: () => Promise<void> | void;
+		children?: Snippet;
+		class?: string;
+	} = $props();
 </script>
 
-<button class="cursor-pointer rounded-sm border-2 p-1" onclick={action}>
+<button class="{className} cursor-pointer rounded-sm border-2 p-1" onclick={action}>
 	{#if label}
 		{label}
 	{:else}

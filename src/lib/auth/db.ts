@@ -46,11 +46,12 @@ export async function delete_session(
 export async function select_user_from_hashed_secret(
 	ch: ClickHouseClient,
 	hashed_secret: Uint8Array
-): Promise<User[]> {
+): Promise<UserSessionView[]> {
 	const l_sessions = DB_TABLES['sessions'];
 	const l_users = DB_TABLES['users'];
-	const query = sanitize_query(`SELECT id, email, role_id, username, avatar_url, expires_at FROM 
-		${l_sessions} LEFT JOIN ${l_users} ON ${l_sessions}.id = ${l_users}.id 
+	const query =
+		sanitize_query(`SELECT id as user_id, email, role_id, username, avatar_url, expires_at FROM 
+		${l_sessions} LEFT JOIN ${l_users} ON ${l_sessions}.user_id = ${l_users}.id 
 		WHERE hashed_secret = [${hashed_secret}]`);
 
 	const response = await ch.query({ query });
@@ -71,7 +72,7 @@ export async function select_role_permissions_from_hashed_secret(
 		`
 		SELECT ${l_users}.id as id, username, expires_at, ${l_perms}.*, ${l_perms}.role_id as role_id, tables != '*' as priority
         FROM ${l_sessions}
-        LEFT JOIN users ON ${l_sessions}.id = ${l_users}.id
+        LEFT JOIN users ON ${l_sessions}.user_id = ${l_users}.id
         LEFT JOIN role_permissions ON ${l_perms}.role_id =  ${l_users}.role_id
 		WHERE ${sel_cond} and (tables = '${table}' or tables = '*')
 		ORDER BY priority DESC

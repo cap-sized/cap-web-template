@@ -7,5 +7,8 @@
 	let { user } = $derived(data as { user: User | null; session: Session | null });
 </script>
 
-<Navbar title="capsized $ {user?.username ?? ''} [{Role.toString(user?.role_id ?? Role.anon)}]" />
+<Navbar
+	title="capsized $ {user?.username ?? ''} [{Role.toString(user?.role_id ?? Role.anon)}]"
+	href={(user?.role_id ?? 0) > Role.authenticated ? '/admin' : '/'}
+/>
 {@render children()}

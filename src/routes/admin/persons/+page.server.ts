@@ -2,9 +2,9 @@ import { validate_session_permissions } from '$lib/auth/session';
 import { SESSION_COOKIE_NAME, unauthorized_msg } from '$lib/common.js';
 import { clickhouse_client } from '$lib/db/clickhouse.js';
 import { Logger } from '$lib/logger.js';
-import { sql_select_person_view, sql_select_full_player_view } from '$lib/query/sql/persons.js';
+import { sql_select_person_view } from '$lib/query/sql/persons.js';
 import { parse_pagination_params, parse_order_params } from '$lib/query/url/parse.js';
-import type { FullPlayerView, PersonView } from '$lib/types/db_persons.js';
+import type { PersonView } from '$lib/types/db_persons.js';
 import type { ResponseJSON } from '@clickhouse/client-web';
 import { error } from '@sveltejs/kit';
 
@@ -24,23 +24,16 @@ export const load = async ({ cookies, url }) => {
 	let paginate = parse_pagination_params(url);
 	let order = parse_order_params(url);
 
-	// TODO: generalise this
-	let full_name_filter = url.searchParams.get('full_name');
-	let where = full_name_filter ? `match > 0` : '';
-	let columns = full_name_filter
-		? ['*', `countSubstringsCaseInsensitive(full_name, '${full_name_filter}') AS match`]
-		: ['*'];
-	let query = sql_select_person_view(paginate, order, where, columns);
+	let full_name_filter = url.searchParams.get('full_name') ?? '';
+	let query = sql_select_person_view(paginate, order, full_name_filter);
 
 	new Logger(url.pathname).debug(query);
 
 	const response = await client.query({ query });
 	const { data } = (await response.json<PersonView>()) as ResponseJSON<PersonView>;
 
-	new Logger(url.pathname).debug(query);
-
 	return {
 		table_data: data ?? [],
-		type_name: 'full_player_view',
+		type_name: 'person_view',
 	};
 };

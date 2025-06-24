@@ -26,7 +26,7 @@
 		{#each $table.getHeaderGroups() as headerGroup}
 			<tr>
 				{#each headerGroup.headers as header}
-					<th class="px-2">
+					<th class="px-2 py-1">
 						{#if !header.isPlaceholder}
 							<FlexRender content={header.column.columnDef.header} context={header.getContext()} />
 						{/if}
@@ -39,7 +39,7 @@
 		{#each $table.getRowModel().rows as row}
 			<tr>
 				{#each row.getVisibleCells() as cell}
-					<td class="px-2">
+					<td class="px-2 py-1">
 						<FlexRender content={cell.column.columnDef.cell} context={cell.getContext()} />
 					</td>
 				{/each}
@@ -50,7 +50,7 @@
 		{#each $table.getFooterGroups() as footerGroup}
 			<tr>
 				{#each footerGroup.headers as header}
-					<th class="px-2">
+					<th class="px-2 py-1">
 						{#if !header.isPlaceholder}
 							<FlexRender content={header.column.columnDef.footer} context={header.getContext()} />
 						{/if}

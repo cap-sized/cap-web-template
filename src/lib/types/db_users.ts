@@ -2,7 +2,6 @@ import type { DateString } from './db';
 import type { Role } from './users';
 
 export interface UserSessionView {
-	id: string;
 	google_id?: string;
 	discord_id?: string;
 	email: string;
@@ -15,7 +14,7 @@ export interface UserSessionView {
 }
 
 export interface UserPermissionsView {
-	id: string;
+	user_id: string;
 	username?: string;
 	role_id: Role;
 	expires_at: DateString;

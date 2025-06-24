@@ -1,11 +1,11 @@
-<script lang="ts" generics="T">
+<script lang="ts" generics="T, Args">
 	import { snake_to_capitalize } from '$lib/ui/fmt/string';
 	import type { HeaderContext } from '@tanstack/table-core';
 
 	let {
 		header_ctx,
 	}: {
-		header_ctx: HeaderContext<T, string>;
+		header_ctx: HeaderContext<T, Args>;
 	} = $props();
 </script>
 

@@ -11,6 +11,8 @@
 <a href="/auth" class="text-blue-600 underline">Login here</a>
 
 {#if user && user.role_id >= Role.admin}
-	Go to the admin sandbox
-	<a href="/admin" class="text-blue-600 underline">here</a>
+	<h3 class="text-xl">
+		Go to the admin sandbox
+		<a href="/admin" class="text-blue-600 underline">here</a>
+	</h3>
 {/if}

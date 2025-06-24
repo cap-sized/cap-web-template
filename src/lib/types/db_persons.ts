@@ -5,12 +5,12 @@ export interface PersonRaw extends Raw {
 	full_name: string;
 	first_name: string;
 	last_name: string;
-	birth_date: string;
-	death_date: string;
+	birth_date?: string;
+	death_date?: string;
 	slug: string;
-	birth_city: string;
-	birth_state_province: string;
-	birth_country_code: string;
+	birth_city?: string;
+	birth_state_province?: string;
+	birth_country_code?: string;
 }
 
 export interface PlayerRaw extends Raw {
@@ -18,9 +18,9 @@ export interface PlayerRaw extends Raw {
 	nhl_player_id: number;
 	height_cm: number;
 	weight_kg: number;
-	shoots_catches_left: boolean;
-	last_amateur_team_id: number;
-	last_nhl_team_id: number;
+	shoots_catches_left?: boolean;
+	last_amateur_team_id?: number;
+	last_nhl_team_id?: number;
 	agent_person_ids: Array<number>;
 }
 
@@ -58,14 +58,14 @@ export type PersonView = {
 	birth_city: string;
 	birth_state_province: string;
 	birth_country_code: string;
-	nhl_player_id?: string;
-	nhl_staff_id?: string;
-	nhl_agent_id?: string;
+	nhl_player_id?: number;
+	nhl_staff_id?: number;
+	nhl_agent_id?: number;
 	is_nhl_player: boolean;
 
-	created_by: string;
+	created_by_user: string;
 	created_at: DateString;
-	updated_by: string;
+	updated_by_user: string;
 	updated_at: DateString;
 };
 
@@ -80,9 +80,9 @@ export type FullPlayerView = {
 	last_amateur_team_id?: number;
 	last_nhl_team_id?: number;
 	agent_person_ids?: Array<number>;
-	created_by: string;
+	created_by_user: string;
 	created_at: DateString;
-	updated_by: string;
+	updated_by_user: string;
 	updated_at?: DateString;
 
 	/* Person fields */
@@ -95,17 +95,11 @@ export type FullPlayerView = {
 	birth_city?: string;
 	birth_state_province?: string;
 	birth_country_code?: string;
-	'pr.created_by': string;
-	'pr.created_at': DateString;
-	'pr.updated_by': string;
-	'pr.updated_at'?: DateString;
 
-	/* Nationality fields: TBC */
+	/* Nationality fields */
 	country_codes: string[];
 	is_primary_country: boolean[];
+	/* Contract value fields: TBC. Linked to contracts */
+	/* Free agency fields: TBC. Linked to player_statuses */
+	/* Playing history fields: TBC. Linked to rosters */
 };
-
-/* DIFFERENT VIEWS WITH DIFFERENT FIELDS */
-/* Contract value fields: TBC. Linked to contracts */
-/* Free agency fields: TBC. Linked to player_statuses */
-/* Playing history fields: TBC. Linked to rosters */

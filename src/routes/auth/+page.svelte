@@ -1,11 +1,19 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { get_superform_options } from '$lib/common';
 	import { Button } from 'bits-ui';
 	import { superForm } from 'sveltekit-superforms';
 
 	let { data } = $props();
 	const { form, errors, enhance, constraints, delayed } = $derived(
-		superForm(data.form, { ...get_superform_options() })
+		superForm(data.form, {
+			onResult: async (event) => {
+				if (event.result.status == 200) {
+					await goto('/', { invalidateAll: true });
+				}
+			},
+			...get_superform_options(),
+		})
 	);
 </script>
 

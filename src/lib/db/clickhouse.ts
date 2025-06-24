@@ -17,7 +17,7 @@ export const DB_DATABASES: { [n: string]: string } = {
 
 export const DB_TABLES: { [n: string]: string } = {
 	users: 'users',
-	sessions: 'dummy_sessions',
+	sessions: 'sessions',
 	role_permissions: 'role_permissions',
 };
 
@@ -49,5 +49,6 @@ export function clickhouse_client(role_id: number): ClickHouseClient {
 	return createClient({
 		username: dbuser?.username,
 		password: dbuser?.password,
+		database: DB_DATABASES['default'],
 	});
 }

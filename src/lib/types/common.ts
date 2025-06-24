@@ -12,6 +12,13 @@ export type Alert = {
 	message: string;
 };
 
+export type DataSet<T> = {
+	table_data: T[];
+	type_name: string;
+	message?: string;
+	error?: string;
+};
+
 export type OrderParams = { [key: string]: 'ASC' | 'DESC' };
 
 export type PaginationParams = { page: number; perpage: number };

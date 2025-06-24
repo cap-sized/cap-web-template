@@ -56,7 +56,7 @@ export async function create_session(
 		table: session_table,
 		values: [
 			{
-				id,
+				user_id: id,
 				hashed_secret: new Array(...hashed_secret),
 				role_id,
 				expires_at: strftime(expires_at, 'ISO_UTC'),
@@ -136,7 +136,8 @@ export async function validate_session(
 			return { user: null, session: null, must_refresh: false };
 		}
 
-		const { id, email, role_id, username, avatar_url, expires_at } = users[0] as UserSessionView;
+		const { user_id, email, role_id, username, avatar_url, expires_at } =
+			users[0] as UserSessionView;
 		const user_client = clickhouse_client(role_id);
 		const expires_at_dt = strptime_ch_utc(expires_at);
 
@@ -151,14 +152,14 @@ export async function validate_session(
 
 		return {
 			user: {
-				id,
+				id: user_id,
 				email,
 				role_id,
 				username,
 				avatar_url,
 			},
 			session: {
-				user_id: id,
+				user_id,
 				expires_at: expires_at_dt,
 				token: session_token,
 			},
